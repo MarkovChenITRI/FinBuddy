@@ -1,3 +1,3 @@
 # FinBuddy
 
-Finvis：Portfolio, Overview to the global market
+**Finvis**：Portfolio, Overview to the global market
