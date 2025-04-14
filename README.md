@@ -1,2 +1,3 @@
 # FinBuddy
-FinBuddy: Your Personal Investment Assistant
+
+Finvis：Portfolio, Overview to the global market
