@@ -1,6 +1,50 @@
 import gradio as gr
 from PIL import Image
+from PortfolioLab_Parser.utils import IXIC_Parsor
+import requests
+import pandas as pd
+class Functions():
+    def __init__(self):
+        self.detail_col = ['Name', 'beta', 'Premium', 'forwardPE', 'shortRatio', 'currentPrice', 'targetLowPrice', 'targetHighPrice']
 
+    def is_internet_connected(self):
+        try:
+            response = requests.get("https://www.google.com", timeout=5)
+            return True
+        except requests.ConnectionError:
+            return False
+
+    def update_slider(self, profit_value, risk_value):
+        if not self.is_internet_connected():
+            gr.Info("Internet not are not connected.", duration=5)
+            return None
+        else:
+            df = self.df.copy()
+            print(profit_value, risk_value, df.shape)
+            return df.loc[:, self.detail_col]
+
+    def analysis_portfolio(self, portfolio_list, mail_address, progress=gr.Progress()):
+        if not self.is_internet_connected():
+            gr.Info("Internet not are not connected.", duration=5)
+            return None, None, None
+        else:
+            print('Mail Address:', mail_address)
+            portfolio_list = {i: portfolio_list[i]["default"].strip('\n').split(' | ') for i in portfolio_list}
+
+            parsor = IXIC_Parsor(portfolio_list = portfolio_list, tqdm_provider=progress.tqdm)
+            
+            self.df = parsor.fit()
+            categories = []
+            for code in self.df.index:
+                for category in portfolio_list:
+                    if code in portfolio_list[category]:
+                        categories.append(category); break
+            self.df['categories'] = categories
+            self.df['Name'] = self.df.index
+            self.df['Premium'] = self.df['Premium'].round(2)
+            return self.df, self.df.loc[:, self.detail_col], gr.update(interactive=True), gr.update(interactive=True)
+
+func = Functions()
 with gr.Blocks() as demo:
     with gr.Row():
         with gr.Column(scale=1):
@@ -9,7 +53,7 @@ with gr.Blocks() as demo:
                      show_share_button = False,
                      show_download_button = False,
                      type="pil")
-            gr.ParamViewer( 
+            paramviewer = gr.ParamViewer( 
                 {
                     "Silicon": {
                         "default": "NVDA | ARM | INTC | IBM | META | AMD | TXN | QCOM | AVGO | MU\n",
@@ -17,7 +61,7 @@ with gr.Blocks() as demo:
                         "description": "Focused on the development and manufacturing of high-performance chips to support computational needs for artificial intelligence, graphics processing, high-speed communication, and data storage."
                     },
                     "Robotics": {
-                        "default": 'BSX | TELA\n',
+                        "default": 'BSX | TSLA\n',
                         "type": '\n',
                         "description": 'Promotes the design and application of robotics, including automated systems for medical surgeries and autonomous mechanical equipment in industrial production, enhancing efficiency and precision.'
                     },
@@ -42,15 +86,37 @@ with gr.Blocks() as demo:
                         "description": 'Focused on designing portable devices that provide functions for daily management, digital communication, and productivity enhancement, integrating artificial intelligence to improve user experience.'
                     }
                 },
-                header='Portfolio List (Locked)',
+                header='Portfolio List',
             )
+            user_input = gr.Textbox(label="Enter E-mail:")
+            submit_button = gr.Button("Start/Subscrbe")
+
         with gr.Column(scale=12):
             gr.Markdown(
                 """
                 # FinBuddy
-                FinBuddy 是一個幫助你管理金融投資組合的AI助理. 您可以為自己所屬的產業別設定需被關注的股票清單，他會從中為您篩選出當前行情適合投資的股票。
+                FinBuddy 是一個幫助你管理金融投資組合的AI助理. 您可以為自己所屬的產業別設定需被關注的股票清單，他會從中為您篩選出當前行情中適合投資的股票。
 
-                注意! 這是一個中長期動態調整的策略。
+                注意! 這是一個動態調整的投資策略，請使用以下工具定期檢視投資配置。(*試用版無法新增標的)
                 """
             )
+            with gr.Tab("Overview"):
+                scatter_plot = gr.ScatterPlot(x='Premium', y='beta', color='categories', height=420)
+
+            with gr.Tab("Details"):
+                dataframe = gr.DataFrame()
+            with gr.Tab("Planer"):
+                with gr.Row():
+                    profit_factor = gr.Slider(value=0, label='Risk Premium for $1', minimum=0, maximum=100, step=1, interactive=False)
+                    risk_factor = gr.Slider(value=100, label='Risk Capacity for $1', minimum=0, maximum=100, step=1, interactive=False)
+                
+    profit_factor.change(func.update_slider, 
+                        inputs=[profit_factor, risk_factor],
+                        outputs=dataframe)
+    risk_factor.change(func.update_slider, 
+                       inputs=[profit_factor, risk_factor],
+                       outputs=dataframe)
+    submit_button.click(func.analysis_portfolio, 
+                        inputs=[paramviewer, user_input], 
+                        outputs=[scatter_plot, dataframe, profit_factor, risk_factor])
 demo.launch()
