@@ -1,0 +1,3 @@
+[submodule "PortfolioLab_Parser"]
+	path = PortfolioLab_Parser
+	url = https://github.com/MarkovChenITRI/PortfolioLab_Parser.git
