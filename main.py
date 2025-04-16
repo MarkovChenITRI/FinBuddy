@@ -105,7 +105,7 @@ with gr.Blocks() as demo:
             with gr.Tab("Overview"):
                 scatter_plot = gr.ScatterPlot(x='Premium', y='beta', color='categories', height=420)
 
-            with gr.Tab("Details"):
+            with gr.Tab("Financial Wellness"):
                 positive_reward = gr.Checkbox(label="Positive Reward", value=False, interactive=False)
                 dataframe = gr.DataFrame()
             with gr.Tab("Planer"):
