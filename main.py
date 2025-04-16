@@ -108,7 +108,7 @@ with gr.Blocks() as demo:
             with gr.Tab("Financial Wellness"):
                 positive_reward = gr.Checkbox(label="Positive Reward", value=False, interactive=False)
                 dataframe = gr.DataFrame()
-            with gr.Tab("Planer"):
+            with gr.Tab("Market Impect"):
                 with gr.Row():
                     profit_factor = gr.Slider(value=0, label='Risk Premium for $1', minimum=0, maximum=100, step=1, interactive=False)
                     risk_factor = gr.Slider(value=100, label='Risk Capacity for $1', minimum=0, maximum=100, step=1, interactive=False)
