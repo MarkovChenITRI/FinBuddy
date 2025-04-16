@@ -112,6 +112,12 @@ with gr.Blocks() as demo:
                 with gr.Row():
                     profit_factor = gr.Slider(value=0, label='Risk Premium for $1', minimum=0, maximum=100, step=1, interactive=False)
                     risk_factor = gr.Slider(value=100, label='Risk Capacity for $1', minimum=0, maximum=100, step=1, interactive=False)
+            with gr.Tab("Business Potential"):
+                gr.Markdown(
+                    """
+                    公司基本資訊與關聯圖
+                    """
+                )
                 
     positive_reward.change(func.update_dataframe, 
                         inputs=[positive_reward],
