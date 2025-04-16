@@ -14,7 +14,7 @@ class Functions():
         except requests.ConnectionError:
             return False
 
-    def update_dataframe(self, positive_reward):
+    def update_dataframe(self, positive_reward, negative_reward, neutral_reward):
         if not self.is_internet_connected():
             gr.Info("Internet not are not connected.", duration=5)
             return None
@@ -23,7 +23,16 @@ class Functions():
             print(df.shape)
             if positive_reward:
                 df = df[df['Premium'] > 1]
-            return df.loc[:, self.detail_col]
+                positive_reward, negative_reward, neutral_reward = True, False, False
+            if negative_reward:
+                df = df[df['Premium'] < -1]
+                positive_reward, negative_reward, neutral_reward = False, True, False
+            if neutral_reward:
+                df = df[(df['Premium'] >= -1) & (df['Premium'] <= 1)]
+                positive_reward, negative_reward, neutral_reward = False, False, True
+
+
+            return df.loc[:, self.detail_col], positive_reward, negative_reward, neutral_reward
 
     def analysis_portfolio(self, portfolio_list, mail_address, progress=gr.Progress()):
         if not self.is_internet_connected():
@@ -44,7 +53,7 @@ class Functions():
             self.df['categories'] = categories
             self.df['Name'] = self.df.index
             self.df['Premium'] = self.df['Premium'].round(2)
-            return self.df, self.df.loc[:, self.detail_col], gr.update(interactive=True), gr.update(interactive=True), gr.update(interactive=True)
+            return self.df, self.df.loc[:, self.detail_col], gr.update(interactive=True), gr.update(interactive=True), gr.update(interactive=True), gr.update(interactive=True), gr.update(interactive=True)
 
 func = Functions()
 with gr.Blocks() as demo:
@@ -106,7 +115,10 @@ with gr.Blocks() as demo:
                 scatter_plot = gr.ScatterPlot(x='Premium', y='beta', color='categories', height=420)
 
             with gr.Tab("Financial Wellness"):
-                positive_reward = gr.Checkbox(label="Positive Reward", value=False, interactive=False)
+                with gr.Row():
+                    positive_reward = gr.Checkbox(label="Positive Reward", value=False, interactive=False)
+                    negative_reward = gr.Checkbox(label="Negative Reward", value=False, interactive=False)
+                    neutral_reward = gr.Checkbox(label="Neutral", value=False, interactive=False)
                 dataframe = gr.DataFrame()
             with gr.Tab("Market Impect"):
                 with gr.Row():
@@ -120,9 +132,16 @@ with gr.Blocks() as demo:
                 )
                 
     positive_reward.change(func.update_dataframe, 
-                        inputs=[positive_reward],
-                        outputs=dataframe)
+                        inputs= [positive_reward, negative_reward, neutral_reward],
+                        outputs=[dataframe, positive_reward, negative_reward, neutral_reward])
+    negative_reward.change(func.update_dataframe, 
+                        inputs= [positive_reward, negative_reward, neutral_reward],
+                        outputs=[dataframe, positive_reward, negative_reward, neutral_reward])
+    neutral_reward.change(func.update_dataframe, 
+                        inputs= [positive_reward, negative_reward, neutral_reward],
+                        outputs=[dataframe, positive_reward, negative_reward, neutral_reward])
     submit_button.click(func.analysis_portfolio, 
-                        inputs=[paramviewer, user_input], 
-                        outputs=[scatter_plot, dataframe, profit_factor, risk_factor, positive_reward])
+                        inputs= [paramviewer, user_input], 
+                        outputs=[scatter_plot, dataframe, profit_factor, risk_factor, 
+                                 positive_reward, negative_reward, neutral_reward])
 demo.launch()
