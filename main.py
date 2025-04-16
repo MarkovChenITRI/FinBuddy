@@ -14,13 +14,15 @@ class Functions():
         except requests.ConnectionError:
             return False
 
-    def update_slider(self, profit_value, risk_value):
+    def update_dataframe(self, positive_reward):
         if not self.is_internet_connected():
             gr.Info("Internet not are not connected.", duration=5)
             return None
         else:
             df = self.df.copy()
-            print(profit_value, risk_value, df.shape)
+            print(df.shape)
+            if positive_reward:
+                df = df[df['Premium'] > 1]
             return df.loc[:, self.detail_col]
 
     def analysis_portfolio(self, portfolio_list, mail_address, progress=gr.Progress()):
@@ -42,7 +44,7 @@ class Functions():
             self.df['categories'] = categories
             self.df['Name'] = self.df.index
             self.df['Premium'] = self.df['Premium'].round(2)
-            return self.df, self.df.loc[:, self.detail_col], gr.update(interactive=True), gr.update(interactive=True)
+            return self.df, self.df.loc[:, self.detail_col], gr.update(interactive=True), gr.update(interactive=True), gr.update(interactive=True)
 
 func = Functions()
 with gr.Blocks() as demo:
@@ -95,7 +97,7 @@ with gr.Blocks() as demo:
             gr.Markdown(
                 """
                 # FinBuddy
-                FinBuddy 是一個幫助你管理金融投資組合的AI助理. 您可以為自己所屬的產業別設定需被關注的股票清單，他會從中為您篩選出當前行情中適合投資的股票。(*試用版無法新增標的)
+                FinBuddy 是一個幫助你管理金融投資組合的AI助理. 您可以為自己所屬的產業別設定需被關注的股票清單，他會從中為您篩選出當前行情中適合投資的股票。(*試用版無法新增/刪除標的)
 
                 注意! 這是一個動態調整的投資策略，你可以透過Line機器人獲取即時的推播通知。
                 """
@@ -104,19 +106,17 @@ with gr.Blocks() as demo:
                 scatter_plot = gr.ScatterPlot(x='Premium', y='beta', color='categories', height=420)
 
             with gr.Tab("Details"):
+                positive_reward = gr.Checkbox(label="Positive Reward", value=False, interactive=False)
                 dataframe = gr.DataFrame()
             with gr.Tab("Planer"):
                 with gr.Row():
                     profit_factor = gr.Slider(value=0, label='Risk Premium for $1', minimum=0, maximum=100, step=1, interactive=False)
                     risk_factor = gr.Slider(value=100, label='Risk Capacity for $1', minimum=0, maximum=100, step=1, interactive=False)
                 
-    profit_factor.change(func.update_slider, 
-                        inputs=[profit_factor, risk_factor],
+    positive_reward.change(func.update_dataframe, 
+                        inputs=[positive_reward],
                         outputs=dataframe)
-    risk_factor.change(func.update_slider, 
-                       inputs=[profit_factor, risk_factor],
-                       outputs=dataframe)
     submit_button.click(func.analysis_portfolio, 
                         inputs=[paramviewer, user_input], 
-                        outputs=[scatter_plot, dataframe, profit_factor, risk_factor])
+                        outputs=[scatter_plot, dataframe, profit_factor, risk_factor, positive_reward])
 demo.launch()
