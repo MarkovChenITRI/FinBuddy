@@ -3,10 +3,10 @@
 ![](https://github.com/MarkovChenITRI/FinBuddy/blob/main/assets/images/FinBuddy_Framework.png)
 
 
-取得`browser-use`模組
-```
-git submodule update --init --recursive
-```
+* 取得`browser-use`模組
+    ```
+    git submodule update --init --recursive
+    ```
 
 * 透過docker引擎安裝並啟動browse-use服務
     ```
