@@ -2,8 +2,21 @@
 
 ![](https://github.com/MarkovChenITRI/FinBuddy/blob/main/assets/images/FinBuddy_Framework.png)
 
-**Finvis**：Portfolio, Overview to the global market
+
+取得Browser-use模組
 ```
-docker volume create n8n_data
-docker run -it --rm --name n8n -p 5678:5678 -v n8n_data:/home/node/.n8n docker.n8n.io/n8nio/n8n
+git submodule update --init --recursive
+cd web-ui
+copy .env.example .env
 ```
+
+* 透過docker引擎安裝並啟動browse-use服務
+    ```
+    docker compose up --build
+    ```
+    
+* 透過docker引擎安裝n8n服務
+    ```
+    docker run -it --rm --name n8n -p 5678:5678 -v ${PWD}/data:/home/node/.n8n docker.n8n.io/n8nio/n8n
+    ```
+    * `${PWD}` 是Windows底下的一個環境變數，表示當前工作目錄的絕對路徑

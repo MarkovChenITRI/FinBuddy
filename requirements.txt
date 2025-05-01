@@ -1,5 +1,0 @@
-gradio
-
-# PortfolioLab_Parser
-scikit-learn
-yfinance
