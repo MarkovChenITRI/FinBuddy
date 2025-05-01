@@ -11,8 +11,15 @@
 * 透過docker引擎安裝並啟動browse-use服務
     ```
     cd browser-use-local
-    copy .env.example .env
-    docker compose up --build
+
+    pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
+    playwright install
+
+    
+    #copy .env.example .env
+    #docker compose up --build
+
+    
     ```
     
 * 透過docker引擎安裝n8n服務
