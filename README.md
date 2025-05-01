@@ -10,7 +10,8 @@
 
 * 透過docker引擎安裝並啟動browse-use服務
     ```
-    cd browser-use && copy .env.example .env
+    cd browser-use-local
+    copy .env.example .env
     docker compose up --build
     ```
     
