@@ -3,15 +3,14 @@
 ![](https://github.com/MarkovChenITRI/FinBuddy/blob/main/assets/images/FinBuddy_Framework.png)
 
 
-取得Browser-use模組
-```
-git submodule update --init --recursive
-cd web-ui
-copy .env.example .env
-```
+* 取得`browser-use`模組
+    ```
+    git submodule update --init --recursive
+    ```
 
 * 透過docker引擎安裝並啟動browse-use服務
     ```
+    cd browser-use && copy .env.example .env
     docker compose up --build
     ```
     
