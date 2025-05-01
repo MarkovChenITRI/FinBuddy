@@ -11,13 +11,10 @@
 * 透過docker引擎安裝並啟動browse-use服務
     ```
     cd browser-use-local
-
-    pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
+    uv venv --python 3.11
+    .venv\Scripts\activate
+    uv pip install -r requirements.txt
     playwright install
-
-    
-    #copy .env.example .env
-    #docker compose up --build
 
     python webui.py --ip 127.0.0.1 --port 7788
     ```
