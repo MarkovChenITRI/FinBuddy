@@ -19,7 +19,7 @@
     #copy .env.example .env
     #docker compose up --build
 
-    
+    python webui.py --ip 127.0.0.1 --port 7788
     ```
     
 * 透過docker引擎安裝n8n服務
