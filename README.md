@@ -6,12 +6,12 @@
 取得Browser-use模組
 ```
 git submodule update --init --recursive
-cd web-ui
-copy .env.example .env
+
 ```
 
 * 透過docker引擎安裝並啟動browse-use服務
     ```
+    cd browser-use && copy .env.example .env
     docker compose up --build
     ```
     
