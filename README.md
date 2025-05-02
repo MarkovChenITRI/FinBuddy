@@ -1,7 +1,5 @@
 # FinBuddy
 
-![](https://github.com/MarkovChenITRI/FinBuddy/blob/main/assets/images/FinBuddy_Framework.png)
-
 ## Installation
 
 * 取得`searxng-docker`及`FinBuddy-MCP-Server`子模組
