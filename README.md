@@ -43,19 +43,33 @@
     ```
     * secret_key請按照[官方文件的指引](https://github.com/searxng/searxng-docker/tree/master)於本機生成
 
-#### 啟動
-
+#### 啟動(第一個命令列)
+* 通過Docker Compose啟動瀏覽器服務
     ```bash
     cd searxng-docker
     docker compose up -d
     ```
 
-### 設定Searxng
-
-* 透過docker引擎安裝n8n服務
+### FinBuddy-MCP-Server
+#### 設定
+* 創建虛擬環境並安裝依賴包
+    ```bash
+    conda create --name FinBuddy python=3.12
+    conda activate FinBuddy
+    pip install -r requirements.txt
     ```
-    #docker run -it --rm --name n8n -p 5678:5678 -v ${PWD}/data:/home/node/.n8n docker.n8n.io/n8nio/n8n
 
+#### 啟動(第二個命令列)
+* 通過Python
+    ```bash
+    conda activate FinBuddy
+    python server.py
+    ```
+
+### 啟動N8N(第三個命令列)
+
+* 透過docker引擎安裝並啟動n8n服務
+    ```
     docker build -t custom-n8n .
     docker run -it --rm --name n8n -p 5678:5678 -v ${PWD}/data:/home/node/.n8n custom-n8n
     ```
