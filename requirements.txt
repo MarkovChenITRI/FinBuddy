@@ -1,0 +1,6 @@
+binance
+python-binance
+binance-connector
+yfinance
+line-bot-sdk
+scikit-learn

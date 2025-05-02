@@ -10,13 +10,10 @@
 
 * 透過docker引擎安裝並啟動browse-use服務
     ```
-    cd browser-use-local
-    uv venv --python 3.11
-    .venv\Scripts\activate
-    uv pip install -r requirements.txt
-    playwright install
+    cd browser-n8n-local
+    venv\Scripts\activate
 
-    python webui.py --ip 127.0.0.1 --port 7788
+    python app.py
     ```
     
 * 透過docker引擎安裝n8n服務
