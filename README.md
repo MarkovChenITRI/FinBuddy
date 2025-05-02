@@ -2,7 +2,7 @@
 
 ## Installation
 
-* 取得`searxng-docker`及`FinBuddy-MCP-Server`子模組
+* 取得`searxng-docker`子模組
     ```bash
     git submodule update --init --recursive
     ```
@@ -50,6 +50,14 @@
 
 ### FinBuddy-MCP-Server
 #### 設定
+* 取得`FinBuddy-MCP-Server`及子模組
+    ```bash
+    git clone https://github.com/MarkovChenITRI/FinBuddy-MCP-Server.git
+
+    cd FinBuddy-MCP-Server
+    git submodule update --init --recursive
+    ```
+
 * 創建虛擬環境並安裝依賴包
     ```bash
     conda create --name FinBuddy python=3.12
@@ -64,7 +72,7 @@
     python server.py
     ```
 
-### 啟動N8N(第三個命令列)
+## 啟動N8N(第三個命令列)
 
 * 透過docker引擎安裝並啟動n8n服務
     ```
