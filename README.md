@@ -16,6 +16,9 @@
     
 * 透過docker引擎安裝n8n服務
     ```
-    docker run -it --rm --name n8n -p 5678:5678 -v ${PWD}/data:/home/node/.n8n docker.n8n.io/n8nio/n8n
+    #docker run -it --rm --name n8n -p 5678:5678 -v ${PWD}/data:/home/node/.n8n docker.n8n.io/n8nio/n8n
+
+    docker build -t custom-n8n .
+    docker run -it --rm --name n8n -p 5678:5678 -v ${PWD}/data:/home/node/.n8n custom-n8n
     ```
     * `${PWD}` 是Windows底下的一個環境變數，表示當前工作目錄的絕對路徑

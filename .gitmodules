@@ -1,0 +1,3 @@
+[submodule "browser-n8n-local"]
+	path = browser-n8n-local
+	url = https://github.com/henry0hai/browser-n8n-local
