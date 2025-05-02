@@ -2,20 +2,56 @@
 
 ![](https://github.com/MarkovChenITRI/FinBuddy/blob/main/assets/images/FinBuddy_Framework.png)
 
+## Installation
 
-* 取得`browser-use`模組
-    ```
+* 取得`searxng-docker`及`FinBuddy-MCP-Server`子模組
+    ```bash
     git submodule update --init --recursive
     ```
-
-* 透過docker引擎安裝並啟動browse-use服務
+### Searxng
+#### 設定
+* 修改`searxng-docker/.env`中的瀏覽器使用者資訊
+    ```python
+    6 SEARXNG_HOSTNAME=<host>
+    7 LETSENCRYPT_EMAIL=<email>
     ```
-    cd browser-n8n-local
-    venv\Scripts\activate
 
-    python app.py
+* 修改`searxng-docker/docker-compose.yaml`的IP為`0.0.0.0:8080:8080`
+    ```bash
+    searxng:
+    container_name: searxng
+    image: docker.io/searxng/searxng:latest
+    restart: unless-stopped
+    networks:
+      - searxng
+    ports:
+      - "0.0.0.0:8080:8080"
     ```
-    
+* 修改`searxng-docker/searxng/settings.yml`的`secret_key`、`limiter`及`search format`
+    ```bash
+    search:
+    # options available for formats: [html, csv, json, rss]
+    formats:
+        - html
+        - json
+    use_default_settings: true
+    server:
+    # base_url is defined in the SEARXNG_BASE_URL environment variable, see .env and docker-compose.yml
+    secret_key: "eadc2e956f1acb06bb648573abe7a54f667533c1b848b48e37c419655e71db5c"  # change this!
+    limiter: false  # can be disabled for a private instance
+    image_proxy: true
+    ```
+    * secret_key請按照[官方文件的指引](https://github.com/searxng/searxng-docker/tree/master)於本機生成
+
+#### 啟動
+
+    ```bash
+    cd searxng-docker
+    docker compose up -d
+    ```
+
+### 設定Searxng
+
 * 透過docker引擎安裝n8n服務
     ```
     #docker run -it --rm --name n8n -p 5678:5678 -v ${PWD}/data:/home/node/.n8n docker.n8n.io/n8nio/n8n

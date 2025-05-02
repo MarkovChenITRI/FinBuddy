@@ -1,3 +1,6 @@
-[submodule "browser-n8n-local"]
-	path = browser-n8n-local
-	url = https://github.com/henry0hai/browser-n8n-local
+[submodule "searxng-docker"]
+	path = searxng-docker
+	url = https://github.com/searxng/searxng-docker.git
+[submodule "FinBuddy-MCP-Server"]
+	path = FinBuddy-MCP-Server
+	url = https://github.com/MarkovChenITRI/FinBuddy-MCP-Server.git
