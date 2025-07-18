@@ -1,6 +1,8 @@
-binance
-python-binance
-binance-connector
+numpy
+pandas
+ollama
 yfinance
-line-bot-sdk
-scikit-learn
+websockets
+python-binance
+mplfinance
+

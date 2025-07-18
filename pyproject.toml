@@ -1,0 +1,16 @@
+[project]
+name = "finbuddy"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "mplfinance>=0.12.10b0",
+    "numpy>=2.3.1",
+    "ollama>=0.5.1",
+    "pandas>=2.3.1",
+    "plotly>=6.2.0",
+    "python-binance>=1.0.29",
+    "websockets>=15.0.1",
+    "yfinance>=0.2.65",
+]
