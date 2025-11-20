@@ -1,8 +1,8 @@
 numpy
 pandas
-ollama
 yfinance
-websockets
-python-binance
-mplfinance
-
+scipy
+scikit-learn
+requests
+functions-framework
+line-bot-sdk

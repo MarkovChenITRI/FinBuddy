@@ -1,16 +1,17 @@
 [project]
 name = "finbuddy"
 version = "0.1.0"
-description = "Add your description here"
+description = "股市投資組合最佳化與回測系統"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "mplfinance>=0.12.10b0",
     "numpy>=2.3.1",
-    "ollama>=0.5.1",
     "pandas>=2.3.1",
-    "plotly>=6.2.0",
-    "python-binance>=1.0.29",
-    "websockets>=15.0.1",
     "yfinance>=0.2.65",
+    "requests>=2.32.0",
+    "scipy>=1.14.0",
+    "scikit-learn>=1.5.0",
+    "matplotlib>=3.9.0",
+    "tqdm>=4.67.0",
 ]
